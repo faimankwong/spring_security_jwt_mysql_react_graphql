@@ -3,26 +3,19 @@ Installation
 -----------
 ## Steps to Setup the Spring Boot Back end app (polling-app-server)
 
-1. **Clone the application**
-
-	```bash
-	git clone https://github.com/callicoder/spring-security-react-ant-design-polls-app.git
-	cd polling-app-server
-	```
-
-2. **Create MySQL database**
+1. **Create MySQL database**
 
 	```bash
 	create database polling_app
 	```
 
-3. **Change MySQL username and password as per your MySQL installation**
+2. **Change MySQL username and password as per your MySQL installation**
 
 	+ open `src/main/resources/application.properties` file.
 
 	+ change `spring.datasource.username` and `spring.datasource.password` properties as per your mysql installation
 
-4. **Run the app**
+3. **Run the app**
 
 	You can run the spring boot app by typing the following command -
 
@@ -38,6 +31,11 @@ Installation
 	mvn package
 	java -jar target/polls-0.0.1-SNAPSHOT.jar
 	```
+4. **Run the Application**
+```bash
+npm install
+npm start
+```
 What is it? 
 -----------
 Thank you for the excellent tutorial made by  Rajeev Singh[1]. This program is “modified based on 
@@ -46,63 +44,94 @@ Spring Security, JWT, React and Ant Design” (ref.).
 
 Technical choices
 -----------
-React is the choice for front-end developing. Node.js is used for the back-end. 
-Redux is used for the state management. The system gets data from Open Exchange Rates API. 
-Semantic is the library for the user-interface. Axios is used for the extraction of data.
+Front end: React(Ant Design)
+Back end: Spring boot, Spring Security, JWT, mysql, GraphQL
 
-Reason for the choices
+Reason to use graphql
 -----------
-React can automatically manage all UI updates. The One-direction data flow can ensure that 
-changes of child structures do not affect their parents. There is a lot of data flow in this 
-system.Thus, it gives a better data management. 
++ No more overfetching and underfetching
++ Back end compatible   
 
-Redux is used to ensure the changing state is step by step. The state can only change by sending action. 
-Thus, there is no mess up with the other state.
-
-Open Exchange Rates provides a simple, lightweight and portable JSON API with live and historical foreign 
-exchange rates which fits the aim of the project. 
-
-  
-
-Example
+Sample GraphQL Queries
 -----------
-Due to the restriction of accessing the time series API in Open Exchange Rate. 
-Providing last 30 days records can only be done by changing the data of historical API. 
-by using promise all, This allows fetching api in parallel which reduce colossal amount of time during the process.
-Below is the code to get data by changing the API parameter recursively:
+Front End: Getting the current login user
 ```
-export const ChangeCurrencyMonthly_api = async (date,name) => {
-    let arry=[];
-    let date_target = new Date(date);
-    let now = new Date();
-    let arry_str=[];
-    for (let i = 0; i < 30; i++) {
-        let date_form = formatDate(date_target);
-        let obj={[date_form]:`https://openexchangerates.org/api/historical/${date_form}.json?app_id=${api_key}&symbols=${name}`}
-        arry_str.push( obj)
-        date_target.setDate(date_target.getDate() - 1)
+  {
+    getCurrentUser {
+  	 id
+    username
+    name
     }
-    // Note that async functions return a promise
-    const promises = arry_str.map(async (item) => {
-        let key=Object.keys(item);
-        let value=Object.values(item);
-        const response = await fetch(`${value}`)
-        const {rates} = await  response.json();
-        if (rates===undefined) {
-            i--;
-            return;
+  }
+
+```
+Back End:
+```
+// Check the Authentication sent from react
+    public DataFetcher getCurrentUser = (env) ->  {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal currentUser=null;
+        if (!(authentication instanceof AnonymousAuthenticationToken))
+            currentUser=(UserPrincipal)authentication.getPrincipal();
+        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+        return userSummary;
+    };
+```
+```
+Wiring
+@Component
+public class Wiring {
+
+    @Autowired
+    GraphQLDataFetchers graphQLDataFetcher;
+    @Autowired
+    MutationDataFetchers mutationDataFetchers;
+    public RuntimeWiring buildRuntimeWiring() {
+        return RuntimeWiring.newRuntimeWiring()
+                .type("Query",typeWiring -> typeWiring
+                        .dataFetcher("checkUsernameAvailability",graphQLDataFetcher.checkUsernameAvailability )
+                        .dataFetcher("checkEmailAvailability",graphQLDataFetcher.checkEmailAvailability )
+                        .dataFetcher("getCurrentUser",graphQLDataFetcher.getCurrentUser )
+                        .dataFetcher("getPolls",graphQLDataFetcher.getPolls )
+                        .dataFetcher("getUserProfile",graphQLDataFetcher.getUserProfile )
+                        .dataFetcher("getPollsCreatedBy",graphQLDataFetcher.getPollsCreatedBy )
+                        .dataFetcher("getPollsVotedBy",graphQLDataFetcher.getPollsVotedBy )
+
+                )
+                .type("Mutation",typeWiring -> typeWiring
+                        .dataFetcher("signup",mutationDataFetchers.registerUser )
+                        .dataFetcher("login",mutationDataFetchers.authenticateUser )
+                        .dataFetcher("createPoll",mutationDataFetchers.createPoll )
+                        .dataFetcher("castVote",mutationDataFetchers.castVote )
+                )
+                .scalar(Scalars.GraphQLInstant)
+                .build();
+    }
+ }
+```
+Example Code for security 
+-----------
+```
+const authLink = new ApolloLink((operation, forward) => {
+    // Retrieve the authorization token from local storage.
+    const token = localStorage.getItem(ACCESS_TOKEN);
+
+    // Use the setContext method to set the HTTP headers.
+    operation.setContext({
+        headers: {
+            authorization: token ? `Bearer ${token}` : ''
         }
-        // Log individual results as they finish
-        let target_object = {'key':key[0],'value':(1/rates[name]).toFixed(4),'per':''};
-        return target_object;
     });
 
-    let now2 = new Date();
-    const results = await Promise.all(promises);
-    return  results;
-}
-
+    // Call the next link in the middleware chain.
+    return forward(operation);
+});
 ```
+
+
+Reference
+-----------
+[1]R. Singh, "callicoder/spring-security-react-ant-design-polls-app", GitHub, 2019. [Online]. Available: https://github.com/callicoder/spring-security-react-ant-design-polls-app. [Accessed: 01- May- 2019].
 Contributors
 -----------
 Fai Man Kwong
