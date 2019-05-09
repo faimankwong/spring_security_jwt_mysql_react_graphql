@@ -159,6 +159,10 @@ Vote and User profit:
 <img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/5.png" width="800" height="600">
 
 
+Issue existing
+-----------
+Auto querying when loading componant
+Possible Solution:Using ApolloConsumer
 
 Reference
 -----------
