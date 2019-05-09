@@ -140,8 +140,24 @@ type Query {
     getPollsVotedBy(username:String,page:String,size:String):PagedResponse
 }
 ```
-Screen
+Screen Capture
 -----------
+Sign Up:
+
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/1.png" width="420" height="420">
+
+Create Poll:
+
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/2.png" width="420" height="420">
+
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/3.png" width="420" height="420">
+
+Vote and User profit:
+
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/4.png" width="420" height="420">
+
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/5.png" width="420" height="420">
+
 
 
 Reference
