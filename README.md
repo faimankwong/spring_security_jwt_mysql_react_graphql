@@ -38,9 +38,9 @@ npm start
 ```
 What is it? 
 -----------
-Thank you for the excellent tutorial made by  Rajeev Singh[1]. This program is “modified based on 
-Building a Full Stack Polls app similar to twitter polls with Spring Boot, 
-Spring Security, JWT, React and Ant Design” (ref.). 
+Thank you for the excellent tutorial made by  Rajeev Singh[1]. This program is modified based on 
+Building a Full Stack Polls app similar to twitter polls with Spring Boot, Graphql,
+Spring Security, JWT, React and Ant Design. 
 
 Technical choices
 -----------
@@ -127,6 +127,21 @@ const authLink = new ApolloLink((operation, forward) => {
     return forward(operation);
 });
 ```
+Part of schema
+-----------
+```
+type Query {
+    checkUsernameAvailability(username:String,skip:Boolean!): UserIdentityAvailability,
+    checkEmailAvailability(email:String,skip:Boolean!):UserIdentityAvailability,
+    getCurrentUser:UserSummary,
+    getPolls(page:String,size:String):PagedResponse,
+    getUserProfile(username:String):UserProfile,
+    getPollsCreatedBy(username:String,page:String,size:String):PagedResponse,
+    getPollsVotedBy(username:String,page:String,size:String):PagedResponse
+}
+```
+Screen
+-----------
 
 
 Reference
