@@ -144,25 +144,26 @@ Screen Capture
 -----------
 Sign Up:
 
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/1.png" width="420" height="420">
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/1.png" width="800" height="600">
 
 Create Poll:
 
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/2.png" width="420" height="420">
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/2.png" width="800" height="600">
 
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/3.png" width="420" height="420">
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/3.png" width="800" height="600">
 
 Vote and User profit:
 
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/4.png" width="420" height="420">
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/4.png" width="800" height="600">
 
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/5.png" width="420" height="420">
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/5.png" width="800" height="600">
 
 
 
 Reference
 -----------
 [1]R. Singh, "callicoder/spring-security-react-ant-design-polls-app", GitHub, 2019. [Online]. Available: https://github.com/callicoder/spring-security-react-ant-design-polls-app. [Accessed: 01- May- 2019].
+
 Contributors
 -----------
 Fai Man Kwong
