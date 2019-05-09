@@ -1,0 +1,110 @@
+type Query {
+    checkUsernameAvailability(username:String,skip:Boolean!): UserIdentityAvailability,
+    checkEmailAvailability(email:String,skip:Boolean!):UserIdentityAvailability,
+    getCurrentUser:UserSummary,
+    getPolls(page:String,size:String):PagedResponse,
+    getUserProfile(username:String):UserProfile,
+    getPollsCreatedBy(username:String,page:String,size:String):PagedResponse,
+    getPollsVotedBy(username:String,page:String,size:String):PagedResponse
+}
+type User {
+    name: String,
+    email: String,
+    password:String,
+    username:String
+}
+
+
+type ApiResponse {
+    success: Boolean,
+    message: String
+}
+
+
+type JwtAuthenticationResponse {
+    accessToken: String,
+    tokenType: String
+}
+
+
+type UserIdentityAvailability {
+    available: Boolean
+}
+
+
+type UserSummary {
+    id: Int,
+    username: String,
+    name: String
+}
+scalar Instant
+
+type PagedResponse {
+    content: [PollResponse],
+    page: Int,
+    size: Int,
+    totalElements: Int,
+    totalPages:Int,
+    last:Boolean
+}
+type PollResponse {
+    id: Int,
+    question: String,
+    choices:[ChoiceResponse],
+    createdBy: UserSummary,
+    creationDateTime: Instant,
+    expirationDateTime:Instant,
+    isExpired:Boolean,
+    selectedChoice:Int,
+    totalVotes:Int
+}
+
+type ChoiceResponse{
+    id: Int,
+    text: String,
+    voteCount: Int
+}
+
+input pollLength {
+    days: Int,
+    hours:Int
+}
+input text {
+    text: String
+}
+
+type UserProfile {
+    id:Int,
+    username:String,
+    name:String,
+    joinedAt: Instant,
+    pollCount:Int,
+    voteCount:Int
+}
+
+type Mutation {
+    signup(
+        name: String,
+        email: String,
+        password:String,
+        username:String
+    ): User,
+    login(
+        usernameOrEmail: String,
+        password: String
+    ): JwtAuthenticationResponse,
+    createPoll(
+        question: String,
+        choices: [text],
+        pollLength:pollLength
+    ): ApiResponse,
+    castVote(
+        pollId:Int
+        choiceId:Int
+    ):PollResponse
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
