@@ -162,7 +162,7 @@ Back End:
 ```
 Wiring:implement the buildRuntime function to wire your static schema with the resolvers.A DataFetcher fetches 
 the Data for one field while the query is executed. While GraphQL Java is executing a query, it calls 
-the appropriate DataFetcher for each field it encounters in query
+the appropriate DataFetcher for each field it encounters in query[2]
 ```
 Wiring
 @Component
@@ -200,7 +200,7 @@ Example Code for security
 
 Middlewares are used to inspect and modify every request made over the link.It joined with the HttpLink. 
 It checks to see if we have a token (JWT, for example) and passes that token into the HTTP header 
-of the request, so we can authenticate interactions with GraphQL performed through our network interface.
+of the request, so we can authenticate interactions with GraphQL performed through our network interface.[3]
 ```
 const authLink = new ApolloLink((operation, forward) => {
     // Retrieve the authorization token from local storage.
