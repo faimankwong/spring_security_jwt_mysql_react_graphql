@@ -265,6 +265,9 @@ Reference
 -----------
 [1]R. Singh, "callicoder/spring-security-react-ant-design-polls-app", GitHub, 2019. [Online]. Available: https://github.com/callicoder/spring-security-react-ant-design-polls-app. [Accessed: 01- May- 2019].
 
+[2]A. Marek and B. Baker, "Getting started with GraphQL Java and Spring Boot", Graphql-java.com, 2019. [Online]. Available: https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/. [Accessed: 01- May- 2019].
+
+[3]"Network layer (Apollo Link)", Apollo Docs, 2019. [Online]. Available: https://www.apollographql.com/docs/react/advanced/network-layer. [Accessed: 01- May- 2019].
 Contributors
 -----------
 Fai Man Kwong
