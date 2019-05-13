@@ -58,12 +58,95 @@ Front End: Getting the current login user
 ```
   {
     getCurrentUser {
-  	 id
+    id
     username
     name
     }
   }
 
+```
+Result:Return exactly want we want: 
+```
+{
+  "data": {
+    "getCurrentUser": {
+      "id": 16,
+      "username": "tester1",
+      "name": "tester1"
+    }
+  }
+```
+Mutation:
+```
+ mutation Login($usernameOrEmail: String, $password: String) {
+    login(usernameOrEmail:$usernameOrEmail, password: $password) {
+      accessToken,
+      tokenType
+    }
+  }
+```
+Result:Generate accessToken
+```
+{
+  "data": {
+    "login": {
+      "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNyIsImlhdCI6MTU1NzczNzQxMSwiZXhwIjoxNTU4MzQyMjExfQ.JExptnJ3t9cfANJDrR4qTHpspegwgE_NIJVBkzVGCSxXh8DaY3BiO6btFMtGQV5RxdgA4yI_oDrOXqcFV0uH2Q",
+      "tokenType": "Bearer"
+    }
+  },
+  "extensions": {
+    "tracing": {
+      "version": 1,
+      "startTime": "2019-05-13T08:50:11.483Z",
+      "endTime": "2019-05-13T08:50:11.621Z",
+      "duration": 138663600,
+      "parsing": {
+        "startOffset": 530100,
+        "duration": 489200
+      },
+      "validation": {
+        "startOffset": 2031400,
+        "duration": 1465600
+      },
+      "execution": {
+        "resolvers": [
+          {
+            "path": [
+              "login"
+            ],
+            "parentType": "Mutation",
+            "returnType": "JwtAuthenticationResponse",
+            "fieldName": "login",
+            "startOffset": 2481500,
+            "duration": 135678000
+          },
+          {
+            "path": [
+              "login",
+              "accessToken"
+            ],
+            "parentType": "JwtAuthenticationResponse",
+            "returnType": "String",
+            "fieldName": "accessToken",
+            "startOffset": 138401100,
+            "duration": 47900
+          },
+          {
+            "path": [
+              "login",
+              "tokenType"
+            ],
+            "parentType": "JwtAuthenticationResponse",
+            "returnType": "String",
+            "fieldName": "tokenType",
+            "startOffset": 138500800,
+            "duration": 17800
+          }
+        ]
+      }
+    }
+  }
+}
 ```
 Back End:
 ```
@@ -77,6 +160,9 @@ Back End:
         return userSummary;
     };
 ```
+Wiring:implement the buildRuntime function to wire your static schema with the resolvers.A DataFetcher fetches 
+the Data for one field while the query is executed. While GraphQL Java is executing a query, it calls 
+the appropriate DataFetcher for each field it encounters in query
 ```
 Wiring
 @Component
@@ -111,6 +197,10 @@ public class Wiring {
 ```
 Example Code for security 
 -----------
+
+Middlewares are used to inspect and modify every request made over the link.It joined with the HttpLink. 
+It checks to see if we have a token (JWT, for example) and passes that token into the HTTP header 
+of the request, so we can authenticate interactions with GraphQL performed through our network interface.
 ```
 const authLink = new ApolloLink((operation, forward) => {
     // Retrieve the authorization token from local storage.
@@ -127,6 +217,13 @@ const authLink = new ApolloLink((operation, forward) => {
     return forward(operation);
 });
 ```
+Password Encryption:org.springframework.security.crypto.password.PasswordEncode is used
+```
+@Autowired
+PasswordEncoder passwordEncoder;
+user.setPassword(passwordEncoder.encode(user.getPassword()));
+```
+
 Part of schema
 -----------
 ```
