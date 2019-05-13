@@ -1,4 +1,5 @@
 # Apollo_spring_security_jwt_mysql_react_graphql (Still in Progress)
+<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/6.png" width="800" height="500">
 Installation
 -----------
 ## Steps to Setup the Spring Boot Back end app (polling-app-server)
