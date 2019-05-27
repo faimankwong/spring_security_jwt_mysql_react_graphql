@@ -1,5 +1,4 @@
 # Apollo_spring_security_jwt_mysql_react_graphql (Still in Progress)
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/6.png" width="800" height="500">
 
 Installation
 -----------
@@ -239,23 +238,6 @@ type Query {
     getPollsVotedBy(username:String,page:String,size:String):PagedResponse
 }
 ```
-Screen Capture
------------
-Sign Up:
-
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/1.png" width="800" height="500">
-
-Create Poll:
-
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/2.png" width="800" height="500">
-
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/3.png" width="800" height="500">
-
-Vote and User profit:
-
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/4.png" width="800" height="500">
-
-<img src="https://github.com/faimankwong/spring_security_jwt_mysql_react_graphql/blob/master/img/5.png" width="800" height="500">
 
 
 Issue existing
