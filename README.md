@@ -1,4 +1,4 @@
-# Apollo_spring_security_jwt_mysql_react_graphql (Still in Progress)
+# Apollo_spring_security_jwt_mysql_react_graphql 
 
 Installation
 -----------
@@ -161,40 +161,78 @@ Back End:
         return userSummary;
     };
 ```
-Wiring:implement the buildRuntime function to wire your static schema with the resolvers.A DataFetcher fetches 
-the Data for one field while the query is executed. While GraphQL Java is executing a query, it calls 
-the appropriate DataFetcher for each field it encounters in query[2]
+User and User repository :Using Hibernate to create and find user[2]
 ```
-Wiring
-@Component
-public class Wiring {
 
-    @Autowired
-    GraphQLDataFetchers graphQLDataFetcher;
-    @Autowired
-    MutationDataFetchers mutationDataFetchers;
-    public RuntimeWiring buildRuntimeWiring() {
-        return RuntimeWiring.newRuntimeWiring()
-                .type("Query",typeWiring -> typeWiring
-                        .dataFetcher("checkUsernameAvailability",graphQLDataFetcher.checkUsernameAvailability )
-                        .dataFetcher("checkEmailAvailability",graphQLDataFetcher.checkEmailAvailability )
-                        .dataFetcher("getCurrentUser",graphQLDataFetcher.getCurrentUser )
-                        .dataFetcher("getPolls",graphQLDataFetcher.getPolls )
-                        .dataFetcher("getUserProfile",graphQLDataFetcher.getUserProfile )
-                        .dataFetcher("getPollsCreatedBy",graphQLDataFetcher.getPollsCreatedBy )
-                        .dataFetcher("getPollsVotedBy",graphQLDataFetcher.getPollsVotedBy )
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+            "username"
+        }),
+        @UniqueConstraint(columnNames = {
+            "email"
+        })
+})
+public class User extends DateAudit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-                )
-                .type("Mutation",typeWiring -> typeWiring
-                        .dataFetcher("signup",mutationDataFetchers.registerUser )
-                        .dataFetcher("login",mutationDataFetchers.authenticateUser )
-                        .dataFetcher("createPoll",mutationDataFetchers.createPoll )
-                        .dataFetcher("castVote",mutationDataFetchers.castVote )
-                )
-                .scalar(Scalars.GraphQLInstant)
-                .build();
+    @NotBlank
+    @Size(max = 40)
+    private String name;
+
+    @NotBlank
+    @Size(max = 15)
+    private String username;
+
+    @NaturalId
+    @NotBlank
+    @Size(max = 40)
+    @Email
+    private String email;
+
+    @NotBlank
+    @Size(max = 100)
+    private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+
+
+    public User(String name, String username, String email, String password) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
- }
+
+}
+```
+UserRepository
+```
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByUsernameOrEmail(String username, String email);
+
+    List<User> findByIdIn(List<Long> userIds);
+
+    Optional<User> findByUsername(String username);
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+}
 ```
 Example Code for security 
 -----------
