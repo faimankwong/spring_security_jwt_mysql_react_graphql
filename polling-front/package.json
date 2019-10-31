@@ -14,7 +14,7 @@
     "graphql": "^0.8.2",
     "graphql-tag": "^1.2.4",
     "html-webpack-plugin": "^2.26.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.13",
     "react": "^16.5.2",
     "react-apollo": "^2.5.5",
     "react-dom": "^16.5.2",
